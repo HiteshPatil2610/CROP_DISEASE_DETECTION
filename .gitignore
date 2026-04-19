@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pth
+
+# Uploaded and result images (runtime generated)
+app/static/results/
+app/static/uploads/
+
+# Dataset (too large for GitHub)
+dataset/
+data/
+
+# Model weights (too large for GitHub)
+*.pt
+*.h5
+*.pkl
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/

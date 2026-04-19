@@ -1,0 +1,29 @@
+# Deep Learning
+ultralytics==8.2.0
+tensorflow==2.15.0
+torch==2.2.0
+torchvision==0.17.0
+
+# Image Processing
+opencv-python==4.9.0.80
+Pillow==10.2.0
+albumentations==1.4.0
+
+# Data Science
+numpy==1.26.4
+pandas==2.2.0
+matplotlib==3.8.2
+seaborn==0.13.2
+scikit-learn==1.4.0
+
+# Web Framework
+flask==3.0.2
+flask-cors==4.0.0
+
+# Database
+# (sqlite3 is built into Python — no install needed)
+
+# Utilities
+python-dotenv==1.0.1
+tqdm==4.66.2
+pyyaml==6.0.1

@@ -1,0 +1,77 @@
+{
+  "Pepper__bell___Bacterial_spot": {
+    "severity": "Moderate",
+    "description": "Xanthomonas campestris causing water-soaked spots that turn brown with yellow halos on leaves.",
+    "treatment": "Apply copper-based bactericide. Use disease-free certified seeds. Avoid working in field when wet."
+  },
+  "Pepper__bell___healthy": {
+    "severity": "None",
+    "description": "No disease detected. Bell pepper plant appears healthy.",
+    "treatment": "Maintain regular watering. Apply balanced fertilizer. Monitor for pests weekly."
+  },
+  "Potato___Early_blight": {
+    "severity": "Moderate",
+    "description": "Alternaria solani causing dark brown concentric ring lesions on older potato leaves.",
+    "treatment": "Apply chlorothalonil or mancozeb. Avoid overhead irrigation. Ensure good soil drainage."
+  },
+  "Potato___healthy": {
+    "severity": "None",
+    "description": "No disease detected. Potato plant appears healthy.",
+    "treatment": "Maintain consistent watering schedule and hilling. Scout weekly for early disease signs."
+  },
+  "Potato___Late_blight": {
+    "severity": "Severe",
+    "description": "Phytophthora infestans causing water-soaked lesions rapidly turning brown-black; highly contagious.",
+    "treatment": "Apply metalaxyl fungicide immediately. Destroy infected plants entirely. Never leave infected debris in field."
+  },
+  "Tomato__Target_Spot": {
+    "severity": "Moderate",
+    "description": "Corynespora cassiicola causing brown circular lesions with concentric yellow-brown rings.",
+    "treatment": "Apply azoxystrobin or difenoconazole. Improve air circulation. Remove lowest leaves as preventive measure."
+  },
+  "Tomato__Tomato_mosaic_virus": {
+    "severity": "Severe",
+    "description": "Tomato Mosaic Virus (ToMV) causing mosaic leaf patterns, distortion, and stunted growth.",
+    "treatment": "Remove and destroy infected plants immediately. Control aphid vectors with insecticide. Disinfect all tools."
+  },
+  "Tomato__Tomato_YellowLeaf__Curl_Virus": {
+    "severity": "Severe",
+    "description": "TYLCV transmitted by whiteflies causing severe leaf curl, yellowing, and significant yield loss.",
+    "treatment": "Control whitefly with imidacloprid. Use reflective mulches. Plant resistant varieties where available."
+  },
+  "Tomato_Bacterial_spot": {
+    "severity": "Moderate",
+    "description": "Xanthomonas vesicatoria causing dark water-soaked spots on leaves and fruit.",
+    "treatment": "Apply copper-based bactericide weekly. Avoid overhead irrigation. Remove infected debris."
+  },
+  "Tomato_Early_blight": {
+    "severity": "Moderate",
+    "description": "Alternaria solani causing concentric ring 'target-board' lesions on older leaves.",
+    "treatment": "Apply chlorothalonil or mancozeb every 7–10 days. Remove and destroy lower infected leaves. Rotate crops annually."
+  },
+  "Tomato_healthy": {
+    "severity": "None",
+    "description": "No disease detected. Tomato plant appears healthy with vibrant green foliage.",
+    "treatment": "Continue balanced NPK fertilization. Scout weekly for early pest and disease signs."
+  },
+  "Tomato_Late_blight": {
+    "severity": "Severe",
+    "description": "Phytophthora infestans — a destructive water mold spreading fast in cool, wet conditions.",
+    "treatment": "Apply metalaxyl + mancozeb immediately. Destroy all infected plant material. Avoid wetting foliage."
+  },
+  "Tomato_Leaf_Mold": {
+    "severity": "Mild",
+    "description": "Passalora fulva causing olive-brown mold patches on leaf undersides in humid conditions.",
+    "treatment": "Reduce humidity below 85%. Improve air circulation. Apply copper-based or chlorothalonil fungicide."
+  },
+  "Tomato_Septoria_leaf_spot": {
+    "severity": "Moderate",
+    "description": "Septoria lycopersici causing small circular spots with grey centers and dark borders.",
+    "treatment": "Apply mancozeb or chlorothalonil. Remove infected leaves immediately. Mulch soil to reduce splash spread."
+  },
+  "Tomato_Spider_mites_Two_spotted_spider_mite": {
+    "severity": "Moderate",
+    "description": "Tetranychus urticae causing yellowing, stippling, and fine webbing on leaf undersides.",
+    "treatment": "Apply miticide or neem oil. Increase ambient humidity. Introduce predatory mites (Phytoseiidae)."
+  }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropGuard AI - Disease Detection</title>
+    <!-- Modern Typeface -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="icon">🌿</span>
+                <h1>CropGuard AI</h1>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-target="upload-view">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    Scan & Predict
+                </button>
+                <button class="nav-btn" data-target="history-view">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    History
+                </button>
+                <button class="nav-btn" data-target="stats-view">
+                    <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Statistics
+                </button>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <!-- Loader Overlay -->
+            <div id="loader" class="loader-overlay hidden">
+                <div class="spinner"></div>
+                <p>Analyzing leaf sample...</p>
+            </div>
+
+            <!-- Upload View -->
+            <section id="upload-view" class="view active">
+                <header class="view-header">
+                    <h2>Crop Disease Detection</h2>
+                    <p>Powered by YOLOv8 and DenseNet-121</p>
+                </header>
+
+                <div class="upload-container">
+                    <div id="drop-zone" class="drop-zone">
+                        <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp" hidden>
+                        <div class="drop-content" id="drop-content">
+                            <div class="drop-icon">
+                                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="48" width="48" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            </div>
+                            <h3>Drag & drop a leaf image</h3>
+                            <p>or <span class="browse-link text-primary">browse files</span></p>
+                            <p class="file-hint">Supports JPG, PNG, WEBP</p>
+                        </div>
+                        <img id="image-preview" class="hidden">
+                        <button id="clear-btn" class="clear-btn hidden">&times;</button>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button id="predict-btn" class="primary-btn" disabled>
+                        Run Prediction Model
+                    </button>
+                </div>
+
+                <!-- Result Card -->
+                <div id="result-card" class="result-card hidden">
+                    <div class="result-grid">
+                        <div class="result-image-box">
+                            <h4 class="section-label">Annotated Result (YOLO)</h4>
+                            <img id="annotated-image" src="" alt="YOLO Annotated Result">
+                            <div class="stat-pills">
+                                <span class="pill" id="yolo-boxes">Boxes: 0</span>
+                                <span class="pill" id="inference-time">Time: 0ms</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <h4 class="section-label">Disease Diagnosis</h4>
+                            
+                            <div class="diagnosis-header">
+                                <span id="r-severity" class="severity-badge moderate">Moderate</span>
+                                <h3 id="r-disease-name">Disease Name</h3>
+                                <p class="crop-type" id="r-crop-type">Crop: Unknown</p>
+                            </div>
+
+                            <div class="metric-card">
+                                <span>Confidence</span>
+                                <div class="progress-bar">
+                                    <div class="progress" id="r-confidence-bar" style="width: 0%"></div>
+                                </div>
+                                <span class="metric-val" id="r-confidence-val">0%</span>
+                            </div>
+
+                            <div class="info-group mt-4">
+                                <h5>Description</h5>
+                                <p id="r-description">Description text goes here.</p>
+                            </div>
+
+                            <div class="info-group">
+                                <h5>Recommended Treatment</h5>
+                                <p id="r-treatment" class="treatment-text">Treatment text goes here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History View -->
+            <section id="history-view" class="view">
+                <header class="view-header">
+                    <h2>Detection History</h2>
+                    <p>Recent scans and diagnoses.</p>
+                </header>
+                <div class="table-container">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Result</th>
+                                <th>Crop</th>
+                                <th>Disease</th>
+                                <th>Confidence</th>
+                                <th>Severity</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- populated by js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Stats View -->
+            <section id="stats-view" class="view">
+                <header class="view-header">
+                    <h2>System Statistics</h2>
+                    <p>Overview of all crop detections.</p>
+                </header>
+                
+                <div class="stats-grid">
+                    <div class="stat-card prime">
+                        <h3>Total Scans</h3>
+                        <p class="stat-huge" id="stat-total">0</p>
+                    </div>
+                </div>
+
+                <div class="stats-panels">
+                    <div class="stat-panel">
+                        <h3>By Crop</h3>
+                        <ul id="stats-by-crop" class="stats-list"></ul>
+                    </div>
+                    <div class="stat-panel">
+                        <h3>By Disease</h3>
+                        <ul id="stats-by-disease" class="stats-list"></ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/main.js"></script>
+</body>
+</html>
