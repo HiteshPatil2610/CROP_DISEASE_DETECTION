@@ -1,6 +1,6 @@
 """
 Crop Disease Prediction Pipeline
-Image → YOLOv8 Detection → Result (disease info loaded dynamically from JSON)
+Image → YOLOv8 Detection → Gemini AI Analysis → Rich Result
 """
 
 import cv2
@@ -10,6 +10,8 @@ import time
 from pathlib import Path
 from ultralytics import YOLO
 from typing import Any
+
+from src.ai_analyzer import analyze_disease
 
 # ── Load models (Lazy) ─────────────────────────────────
 YOLO_MODEL: Any = None
@@ -93,8 +95,7 @@ def predict(image_path: str, save_result: bool = True) -> dict:
 
     # ── YOLO Detection ─────────────────────────────────
     assert YOLO_MODEL is not None
-    # Higher threshold to avoid weak false-positive detections
-    yolo_results = YOLO_MODEL(img_rgb, conf=0.50, iou=0.45, verbose=False)
+    yolo_results = YOLO_MODEL(img_rgb, conf=0.25, iou=0.45, verbose=False)
     boxes = []
     yolo_conf = 0.0
     best_class_idx = 0
@@ -109,8 +110,26 @@ def predict(image_path: str, save_result: bool = True) -> dict:
                     yolo_conf = conf
                     best_class_idx = int(box.cls[0])
 
-    # Find the "healthy" class index for the detected crop (fallback)
-    def find_healthy_class() -> str:
+    # Known crop prefixes for single-underscore class name parsing
+    KNOWN_CROPS = {
+        "tomato", "potato", "corn", "rice", "wheat", "apple", "grape",
+        "peach", "cherry", "strawberry", "pepper", "squash", "soybean",
+        "sugarcane", "groundnut", "bean", "coffee", "mango", "orange"
+    }
+
+    def extract_crop_disease(name: str):
+        """Parse crop & disease from class name (handles ___ and _ separators)."""
+        if "___" in name:
+            parts = name.split("___", 1)
+            return parts[0].replace("_", " "), parts[1].replace("_", " ")
+        parts = name.split("_")
+        if parts[0].lower() in KNOWN_CROPS:
+            return parts[0], " ".join(parts[1:]) if len(parts) > 1 else name
+        # Full class name is the disease; crop unknown
+        return name.replace("_", " "), name.replace("_", " ")
+
+    def find_best_class() -> str:
+        """Fallback class: prefer a healthy entry, else first class."""
         for name in YOLO_MODEL.names.values():
             if "healthy" in name.lower():
                 return name
@@ -119,29 +138,33 @@ def predict(image_path: str, save_result: bool = True) -> dict:
     if boxes:
         confidence = yolo_conf * 100.0
         class_name = YOLO_MODEL.names[best_class_idx]
-        # Guard: if confidence is below 55%, the model is uncertain — call it healthy
-        if confidence < 55.0:
-            class_name = find_healthy_class()
-            confidence = 100.0 - confidence  # flip: express as "healthy confidence"
     else:
         confidence = 0.0
-        class_name = find_healthy_class()  # No detection → healthy
+        class_name = find_best_class()
 
-    # ── Dynamic disease info lookup ─────────────────────
+    # ── Dynamic disease info lookup (static JSON fallback) ──────────────────
     info = get_disease_info(class_name)
     elapsed = float(f"{(time.time() - start) * 1000:.1f}")
 
-    # Determine crop type from class name prefix
-    crop = class_name.split("___")[0].replace("_", " ") if "___" in class_name else "Unknown"
+    # Extract crop and disease label robustly
+    crop, disease_label = extract_crop_disease(class_name)
+
+    # ── Gemini AI Analysis ───────────────────────────────────────────────────
+    ai_analysis = analyze_disease(crop, disease_label, confidence)
 
     result = {
         "image_path"  : str(img_path),
         "crop_type"   : crop,
         "disease_name": class_name.replace("___", " — ").replace("_", " "),
         "confidence"  : float(f"{confidence:.2f}"),
-        "severity"    : info["severity"],
-        "description" : info["description"],
-        "treatment"   : info["treatment"],
+        # Legacy static fields (kept for backwards compatibility)
+        "severity"    : ai_analysis.get("severity_level", info["severity"]),
+        "description" : ai_analysis.get("condition_summary", info["description"]),
+        "treatment"   : "; ".join(ai_analysis.get("organic_treatments", []) +
+                                   ai_analysis.get("chemical_treatments", []))
+                        or info["treatment"],
+        # Rich AI analysis block
+        "ai_analysis" : ai_analysis,
         "yolo_boxes"  : len(boxes),
         "inference_ms": elapsed,
         "top5"        : [{"class": class_name.replace("_", " "), "prob": float(f"{confidence:.2f}")}]

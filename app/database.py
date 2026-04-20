@@ -60,7 +60,7 @@ def init_db():
     """)
     conn.commit()
     conn.close()
-    print("✅ Database initialized:", DB_PATH)
+    print("[OK] Database initialized:", DB_PATH)
 
 def save_detection(result: dict) -> int:
     """Save a prediction result to DB. Returns new row ID."""

@@ -12,6 +12,7 @@ import os, sys, json
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.database import save_detection, get_all_detections, get_stats, delete_detection
+from src.ai_analyzer import analyze_disease
 
 app = Flask(__name__)
 CORS(app)
@@ -71,6 +72,26 @@ def delete(detection_id):
     delete_detection(detection_id)
     return jsonify({"success": True, "deleted_id": detection_id})
 
+@app.route("/api/ai-analysis", methods=["POST"])
+def ai_analysis_route():
+    """
+    On-demand AI re-analysis endpoint.
+    Body (JSON): { "crop": "Tomato", "disease": "Early_blight", "confidence": 87.5 }
+    """
+    data = request.get_json(force=True, silent=True) or {}
+    crop       = data.get("crop", "").strip()
+    disease    = data.get("disease", "").strip()
+    confidence = float(data.get("confidence", 0.0))
+
+    if not crop or not disease:
+        return jsonify({"error": "crop and disease fields are required"}), 400
+
+    try:
+        result = analyze_disease(crop, disease, confidence)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/static/uploads/<path:filename>")
 def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
@@ -80,6 +101,6 @@ def result_file(filename):
     return send_from_directory(RESULT_FOLDER, filename)
 
 if __name__ == "__main__":
-    print("🌿 CropGuard AI Server starting...")
+    print("[CropGuard AI] Server starting...")
     print("   Open: http://localhost:5000")
     app.run(debug=True, host="0.0.0.0", port=5000)

@@ -1,26 +1,56 @@
-# Virtual environment
+# ── Virtual environments ───────────────────────────────────────────────────────
 venv/
+.venv/
+env/
 
-# Python cache
+# ── Python cache ───────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
+*.pyo
 *.pth
+*.egg-info/
+dist/
+build/
 
-# Uploaded and result images (runtime generated)
+# ── Uploaded & result images (runtime-generated) ───────────────────────────────
 app/static/results/
 app/static/uploads/
 
-# Dataset (too large for GitHub)
+# ── Database (auto-created on startup) ─────────────────────────────────────────
+app/detections.db
+*.db
+*.sqlite
+
+# ── Datasets (too large for GitHub) ────────────────────────────────────────────
 dataset/
 data/
 
-# Model weights (too large for GitHub)
+# ── Model weights (too large for GitHub) ───────────────────────────────────────
 *.pt
 *.h5
 *.pkl
+*.onnx
+models/yolov8_custom.pt
 
-# Environment variables
+# ── Training runs / YOLO output ────────────────────────────────────────────────
+runs/
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+train_err.log
+
+# ── Notebooks checkpoints ──────────────────────────────────────────────────────
+notebooks/.ipynb_checkpoints/
+
+# ── Environment variables ──────────────────────────────────────────────────────
 .env
 
-# VS Code settings
+# ── IDE / Editor settings ──────────────────────────────────────────────────────
 .vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS generated ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

@@ -1,29 +1,31 @@
-# Deep Learning
-ultralytics==8.2.0
-tensorflow==2.15.0
-torch==2.2.0
-torchvision==0.17.0
+# ── Deep Learning ──────────────────────────────────────────────────────────────
+ultralytics>=8.2.0          # YOLOv8 inference & training
+torch>=2.2.0                # PyTorch backend
+torchvision>=0.17.0         # Torchvision transforms
 
-# Image Processing
-opencv-python==4.9.0.80
-Pillow==10.2.0
-albumentations==1.4.0
+# ── Image Processing ───────────────────────────────────────────────────────────
+opencv-python>=4.9.0.80     # Image loading & bounding box annotation
+Pillow>=10.2.0              # Image preprocessing (resize, convert)
+albumentations>=1.4.0       # Data augmentation (training)
 
-# Data Science
-numpy==1.26.4
-pandas==2.2.0
-matplotlib==3.8.2
-seaborn==0.13.2
-scikit-learn==1.4.0
+# ── Data Science ───────────────────────────────────────────────────────────────
+numpy>=1.26.4               # Numerical ops
+pandas>=2.2.0               # Tabular data handling
+matplotlib>=3.8.2           # Training plots & visualisation
+seaborn>=0.13.2             # Statistical charts
+scikit-learn>=1.4.0         # Metrics (accuracy, f1, confusion matrix)
 
-# Web Framework
-flask==3.0.2
-flask-cors==4.0.0
+# ── Web Framework ──────────────────────────────────────────────────────────────
+flask>=3.0.2                # Lightweight WSGI web server
+flask-cors>=4.0.0           # Cross-origin resource sharing headers
 
-# Database
-# (sqlite3 is built into Python — no install needed)
+# ── Database ───────────────────────────────────────────────────────────────────
+# sqlite3 is part of Python standard library — no install required
 
-# Utilities
-python-dotenv==1.0.1
-tqdm==4.66.2
-pyyaml==6.0.1
+# ── AI / LLM ──────────────────────────────────────────────────────────────────
+google-genai>=1.0.0         # Google Gemini AI SDK (Flash 2.0 Lite)
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.1        # Load .env environment variables
+tqdm>=4.66.2                # Progress bars (dataset processing, training)
+pyyaml>=6.0.1               # YAML config files (YOLO dataset.yaml)

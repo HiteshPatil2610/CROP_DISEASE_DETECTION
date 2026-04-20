@@ -67,47 +67,86 @@
                     </button>
                 </div>
 
-                <!-- Result Card -->
+                <!-- Result Card — redesigned, no YOLO image box -->
                 <div id="result-card" class="result-card hidden">
-                    <div class="result-grid">
-                        <div class="result-image-box">
-                            <h4 class="section-label">Annotated Result (YOLO)</h4>
-                            <img id="annotated-image" src="" alt="YOLO Annotated Result">
-                            <div class="stat-pills">
-                                <span class="pill" id="yolo-boxes">Boxes: 0</span>
-                                <span class="pill" id="inference-time">Time: 0ms</span>
+
+                    <!-- Diagnosis Header -->
+                    <div class="result-header">
+                        <div class="result-header-main">
+                            <div class="badge-row">
+                                <span id="r-severity" class="severity-badge moderate">Moderate</span>
+                                <span id="r-urgency" class="urgency-badge"></span>
+                                <span class="ai-source-pill pill" id="ai-source-pill"></span>
+                            </div>
+                            <h2 id="r-disease-name">Disease Name</h2>
+                            <p class="crop-label" id="r-crop-type">Crop: Unknown</p>
+                        </div>
+                        <div class="result-meta-pills">
+                            <span class="meta-pill" id="inference-time">⏱ 0ms</span>
+                            <span class="meta-pill" id="yolo-boxes">📦 0 detections</span>
+                        </div>
+                    </div>
+
+                    <!-- Confidence + Summary + Symptoms -->
+                    <div class="result-body">
+                        <div class="confidence-row">
+                            <span class="conf-label">Model Confidence</span>
+                            <div class="progress-bar">
+                                <div class="progress" id="r-confidence-bar" style="width: 0%"></div>
+                            </div>
+                            <span class="metric-val" id="r-confidence-val">0%</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <div class="summary-block">
+                                <h5 class="block-label">Condition Summary</h5>
+                                <p id="r-description">—</p>
+                            </div>
+                            <div class="summary-block" id="symptoms-group">
+                                <h5 class="block-label">Key Symptoms</h5>
+                                <ul id="r-symptoms" class="ai-list symptoms-list"></ul>
                             </div>
                         </div>
-                        <div class="result-details">
-                            <h4 class="section-label">Disease Diagnosis</h4>
-                            
-                            <div class="diagnosis-header">
-                                <span id="r-severity" class="severity-badge moderate">Moderate</span>
-                                <h3 id="r-disease-name">Disease Name</h3>
-                                <p class="crop-type" id="r-crop-type">Crop: Unknown</p>
-                            </div>
+                    </div>
 
-                            <div class="metric-card">
-                                <span>Confidence</span>
-                                <div class="progress-bar">
-                                    <div class="progress" id="r-confidence-bar" style="width: 0%"></div>
+                    <!-- Gemini AI Analysis Panel -->
+                    <div class="ai-panel" id="ai-panel">
+                        <div class="ai-panel-header">
+                            <span class="ai-badge" id="ai-panel-badge">✨ AI Analysis</span>
+                            <span id="ai-panel-source" class="ai-panel-source"></span>
+                        </div>
+
+                        <div class="ai-panel-grid">
+                            <div class="ai-section">
+                                <h5 class="ai-section-title">🌿 Organic Treatments</h5>
+                                <ol id="r-organic" class="ai-list numbered-list"></ol>
+                            </div>
+                            <div class="ai-section">
+                                <h5 class="ai-section-title">⚗️ Chemical Treatments</h5>
+                                <ol id="r-chemical" class="ai-list numbered-list"></ol>
+                            </div>
+                            <div class="ai-section">
+                                <h5 class="ai-section-title">🛡️ Prevention Tips</h5>
+                                <ul id="r-prevention" class="ai-list"></ul>
+                            </div>
+                            <div class="ai-section">
+                                <h5 class="ai-section-title">📊 Impact &amp; Recovery</h5>
+                                <div class="impact-grid">
+                                    <div class="impact-item">
+                                        <span class="impact-label">Economic Impact</span>
+                                        <p id="r-economic" class="impact-value">—</p>
+                                    </div>
+                                    <div class="impact-item">
+                                        <span class="impact-label">Recovery Time</span>
+                                        <p id="r-recovery" class="impact-value">—</p>
+                                    </div>
                                 </div>
-                                <span class="metric-val" id="r-confidence-val">0%</span>
-                            </div>
-
-                            <div class="info-group mt-4">
-                                <h5>Description</h5>
-                                <p id="r-description">Description text goes here.</p>
-                            </div>
-
-                            <div class="info-group">
-                                <h5>Recommended Treatment</h5>
-                                <p id="r-treatment" class="treatment-text">Treatment text goes here.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
 
             <!-- History View -->
             <section id="history-view" class="view">
